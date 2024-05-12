@@ -1,3 +1,6 @@
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 from png_info import get_png_info
 from png_anonymize import anonymize_png
 
@@ -9,7 +12,7 @@ from png_anonymize import anonymize_png
 # iTXT: exif
 # PLTE: stereoscopic, view
 
-file_path = "shrek.png"
+file_path = "pwr.png"
 try:
     png_info = get_png_info(file_path)
     for key, value in png_info.items():
@@ -68,6 +71,22 @@ try:
             print(f"{key}: {value}")
 except ValueError as e:
     print(e)
+
+# wyswietlenie pliku w zewnetrznym oknie
+image = Image.open(file_path)
+image.show()
+
+# transformata fouriera
+image_gray = image.convert("L")  # konwersja na grayscale
+fft_data = np.fft.fft2(image_gray)  # fast fourier transform 2D
+fft_shifted = np.fft.fftshift(fft_data)  # przesun zerowa czestotliwosc do srodka
+
+# wykres widma
+spectrum = np.log(1 + np.abs(fft_shifted))  # skala logarytmiczna dla lepszej wizualizacji
+plt.imshow(spectrum, cmap='gray')
+plt.title('Spectrum Plot')
+plt.colorbar(label='Intensity')
+plt.show()
 
 
 # ============ ANONYMIZE FILE ============
