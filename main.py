@@ -1,4 +1,13 @@
 from png_info import get_png_info
+from png_anonymize import anonymize_png
+
+# ============ READ PNG METADATA ============
+
+# cHRM: donek
+# sRGB: gombek, stereoscopic
+# bKGD: donek2
+# iTXT: exif
+# PLTE: stereoscopic, view
 
 file_path = "shrek.png"
 try:
@@ -60,8 +69,9 @@ try:
 except ValueError as e:
     print(e)
 
-# cHRM: donek
-# sRGB: gombek, stereoscopic
-# bKGD: donek2
-# iTXT: exif
-# PLTE: stereoscopic, view
+
+# ============ ANONYMIZE FILE ============
+
+input_filename = "donek2.png"
+anonymized_filename = "anonymized.png"
+anonymize_png(input_filename, anonymized_filename)
